@@ -5,15 +5,6 @@ import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,8 +28,9 @@ export default function HomePage() {
             <Link to="/products/leaderboards">Explore all products &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 10 }).map((_, index) => (
+        {Array.from({ length: 11 }).map((_, index) => (
           <ProductCard
+            key={`productId-${index}`}
             id={`productId-${index}`}
             name="Product Name"
             description="Product Description"
@@ -51,7 +43,7 @@ export default function HomePage() {
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
-            Latest discussions
+            Latest Discussions
           </h2>
           <p className="text-xl font-light text-foreground">
             The latest discussions from our community.
@@ -62,6 +54,7 @@ export default function HomePage() {
         </div>
         {Array.from({ length: 11 }).map((_, index) => (
           <PostCard
+            key={`postId-${index}`}
             id={`postId-${index}`}
             title="What is the best productivity tool?"
             author="Nico"
@@ -85,7 +78,8 @@ export default function HomePage() {
         </div>
         {Array.from({ length: 5 }).map((_, index) => (
           <IdeaCard
-            id="ideaId"
+            key={`ideaId-${index}`}
+            id={`ideaId-${index}`}
             title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage the business."
             viewsCount={123}
             postedAt="12 hours ago"
@@ -137,8 +131,8 @@ export default function HomePage() {
           <TeamCard
             key={`teamId-${index}`}
             id={`teamId-${index}`}
-            leaderUsername="juwon"
-            leaderAvatarUrl="https://github.com/jw1011.png"
+            leaderUsername="lynn"
+            leaderAvatarUrl="https://github.com/inthetiger.png"
             positions={[
               "React Developer",
               "Backend Developer",
