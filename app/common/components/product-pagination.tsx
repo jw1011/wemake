@@ -23,7 +23,7 @@ export default function ProductPagination({
     searchParams.set("page", page.toString());
     setSearchParams(searchParams, {
       //preventScrollReset: true
-      //스크롤 막는 방법
+      //스크롤 새로고침 막는 방법
     });
   };
 
