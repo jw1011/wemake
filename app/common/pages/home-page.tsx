@@ -131,8 +131,8 @@ export default function HomePage() {
           <TeamCard
             key={`teamId-${index}`}
             id={`teamId-${index}`}
-            leaderUsername="lynn"
-            leaderAvatarUrl="https://github.com/inthetiger.png"
+            leaderUsername="juwon"
+            leaderAvatarUrl="https://github.com/jw1011.png"
             positions={[
               "React Developer",
               "Backend Developer",
