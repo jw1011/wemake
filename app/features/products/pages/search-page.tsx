@@ -27,7 +27,6 @@ export function loader({ request, params }: Route.LoaderArgs) {
   if (!success) {
     throw new Error("Invalid params");
   }
-  console.log(parsedData);
 }
 
 export default function SearchPage({ loaderData }: Route.ComponentProps) {
