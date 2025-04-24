@@ -5,7 +5,6 @@ import {
   prefix,
   route,
 } from "@react-router/dev/routes";
-import { features } from "process";
 
 export default [
   index("common/pages/home-page.tsx"),

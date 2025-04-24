@@ -4,11 +4,12 @@
 import type * as T from "react-router/route-module";
 
 import type { Info as Parent0 } from "../../../../+types/root.js";
+import type { Info as Parent1 } from "../../layouts/+types/product-overview-layout.js";
 
 type Module = typeof import("../product-reviews-page.js");
 
 export type Info = {
-  parents: [Parent0];
+  parents: [Parent0, Parent1];
   id: "features/products/pages/product-reviews-page";
   file: "features/products/pages/product-reviews-page.tsx";
   path: "products/:productId/reviews";
