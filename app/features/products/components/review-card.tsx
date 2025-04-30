@@ -1,9 +1,5 @@
 import { StarIcon } from "lucide-react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "~/common/components/ui/avatar";
+import { Avatar, AvatarImage } from "~/common/components/ui/avatar";
 
 interface ReviewCardProps {
   username: string;
