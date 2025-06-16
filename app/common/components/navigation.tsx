@@ -117,9 +117,9 @@ const menus = [
         to: "/community?sort=new",
       },
       {
-        name: "Create a Post",
+        name: "Create a Discussion",
         description: "Create a post in our community",
-        to: "/community/create",
+        to: "/community/submit",
       },
     ],
   },
