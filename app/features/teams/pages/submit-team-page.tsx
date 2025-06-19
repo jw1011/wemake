@@ -21,8 +21,9 @@ export default function SubmitTeamPage() {
       <Form className="max w-screen-2xl flex flex-col items-center gap-10 mx-auto">
         <div className="grid grid-cols-3 w-full gap-10">
           <InputPair
-            label="What is the name fo your product?"
+            label="What is the name of your product?"
             description="20 characters max"
+            placeholder="i.e Doggy Social"
             name="name"
             maxLength={20}
             type="text"
@@ -42,6 +43,46 @@ export default function SubmitTeamPage() {
               { label: "Product", value: "product" },
             ]}
           ></SelectPair>
+          <InputPair
+            label="What is the size of your product?"
+            description="(1-100)"
+            name="size"
+            max={100}
+            min={1}
+            type="number"
+            id="size"
+            required
+          ></InputPair>
+          <InputPair
+            label="How much equity are you willing to give?"
+            description="(*each)"
+            name="size"
+            max={100}
+            min={1}
+            type="number"
+            id="equity"
+            required
+          ></InputPair>
+          <InputPair
+            label="What roles are you looking for?"
+            placeholder="React Developer, Backend Developer, Product Manager"
+            description="(comma separated)"
+            name="roles"
+            type="text"
+            id="roles"
+            required
+          ></InputPair>{" "}
+          <InputPair
+            label="What is the description of your product?"
+            description="(200 characters max)"
+            placeholder="i.e We are building a new social media platform for dogs to connect with each other"
+            name="description"
+            maxLength={200}
+            type="text"
+            id="description"
+            textArea
+            required
+          ></InputPair>
         </div>
         <Button type="submit" className="w-full max-w-sm" size="lg">
           Create team
