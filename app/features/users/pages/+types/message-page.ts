@@ -1,18 +1,18 @@
 // React Router generated types for route:
-// features/products/pages/submit-page.tsx
+// features/users/pages/message-page.tsx
 
 import type * as T from "react-router/route-module";
 
 import type { Info as Parent0 } from "../../../../+types/root.js";
 
-type Module = typeof import("../submit-product-page.js");
+type Module = typeof import("../message-page.js");
 
 export type Info = {
   parents: [Parent0];
-  id: "features/products/pages/submit-page";
-  file: "features/products/pages/submit-page.tsx";
-  path: "products/submit";
-  params: {} & { [key: string]: string | undefined };
+  id: "features/users/pages/message-page";
+  file: "features/users/pages/message-page.tsx";
+  path: "/my/messages/:messageId";
+  params: { messageId: string } & { [key: string]: string | undefined };
   module: Module;
   loaderData: T.CreateLoaderData<Module>;
   actionData: T.CreateActionData<Module>;
