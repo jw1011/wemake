@@ -65,7 +65,7 @@ export default [
       route("/join", "features/auth/pages/join-page.tsx"),
       ...prefix("/otp", [
         route("/start", "features/auth/pages/otp-start-page.tsx"),
-        route("/complete", "features/auth/pages/otp-page.tsx"),
+        route("/complete", "features/auth/pages/otp-complete-page.tsx"),
       ]),
       ...prefix("/social/:provider", [
         route("/start", "features/auth/pages/social-start-page.tsx"),
@@ -100,5 +100,11 @@ export default [
     route("/settings", "features/users/pages/settings-page.tsx"),
     route("/notifications", "features/users/pages/notifications-page.tsx"),
   ]),
-  route("/users/:username", "features/users/pages/profile-page.tsx"),
+  layout("features/users/layouts/profile-layout.tsx", [
+    ...prefix("/users/:username", [
+      index("features/users/pages/profile-page.tsx"),
+      route("/products", "features/users/pages/profile-products-page.tsx"),
+      route("/posts", "features/users/pages/profile-posts-page.tsx"),
+    ]),
+  ]),
 ] satisfies RouteConfig;
