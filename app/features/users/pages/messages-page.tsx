@@ -2,11 +2,15 @@ import type { Route } from "./+types/messages-page";
 
 export function meta() {
   return [
-    { title: "메시지 | WeMake" },
+    { title: "Messages | WeMake" },
     { name: "description", content: "내 메시지 목록" },
   ];
 }
 
 export default function MessagesPage() {
-  return <div className="container mx-auto px-4 py-8">aa</div>;
+  return (
+    <div className="space-y-20">
+      <h1 className="text-4xl font-bold">Messages</h1>
+    </div>
+  );
 }
