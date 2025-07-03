@@ -1,38 +1,66 @@
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
+import { Form } from "react-router";
+import { Textarea } from "~/common/components/ui/textarea";
+import { Button } from "~/common/components/ui/button";
+import { SendIcon } from "lucide-react";
+import { MessageBubble } from "../components/message-bubble";
 import type { Route } from "./+types/message-page";
 
-export function loader({ request, params }: Route.LoaderArgs) {
-  const { messageId } = params;
-  return {
-    messageId,
-    // 메시지 상세 정보 로드
-  };
-}
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "Message | wemake" }];
+};
 
-export function action({ request }: Route.ActionArgs) {
-  return {
-    // 메시지 관련 액션 처리
-  };
-}
-
-export function meta({ data }: Route.MetaFunction) {
-  return [
-    { title: `메시지 상세 | WeMake` },
-    { name: "description", content: "메시지 상세 정보" },
-  ];
-}
-
-export default function MessagePage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
-  const { messageId } = loaderData;
+export default function MessagePage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">메시지 상세</h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-2">메시지 ID: {messageId}</h2>
-        <p className="text-gray-600">메시지 상세 내용이 여기에 표시됩니다.</p>
+    <div className="h-full flex flex-col justify-between">
+      <Card>
+        <CardHeader className="flex flex-row items-center gap-4">
+          <Avatar className="size-14">
+            <AvatarImage src="https://github.com/stevejobs.png" />
+            <AvatarFallback>S</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col gap-0">
+            <CardTitle className="text-xl">Steve Jobs</CardTitle>
+            <CardDescription>2 days ago</CardDescription>
+          </div>
+        </CardHeader>
+      </Card>
+      <div className="py-10 overflow-y-scroll flex flex-col justify-start h-full">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <MessageBubble
+            key={index}
+            avatarUrl="https://github.com/stevejobs.png"
+            avatarFallback="S"
+            content="this is a message from steve jobs in iheaven, make sure to reply because if you don't, you will be punished."
+            isCurrentUser={index % 2 === 0}
+          />
+        ))}
       </div>
+      <Card>
+        <CardHeader>
+          <Form className="relative flex justify-end items-center">
+            <Textarea
+              placeholder="Write a message..."
+              rows={2}
+              className="resize-none"
+            />
+            <Button type="submit" size="icon" className="absolute right-2">
+              <SendIcon className="size-4" />
+            </Button>
+          </Form>
+        </CardHeader>
+      </Card>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export function IdeaCard({
     <Card className="bg-transparent hover:bg-card/50 transition-colors">
       <CardHeader>
         <Link to={`/ideas/${id}`}>
-          <CardTitle className="text-xl">
+          <CardTitle className="text-xl w-full">
             <span
               className={cn(
                 claimed
