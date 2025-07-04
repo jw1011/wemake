@@ -1,45 +1,80 @@
+import { Line } from "recharts";
+import {
+  type ChartConfig,
+  ChartTooltipContent,
+} from "~/common/components/ui/chart";
+import { ChartTooltip } from "~/common/components/ui/chart";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
+
+import { ChartContainer } from "~/common/components/ui/chart";
+import { CartesianGrid, LineChart, XAxis } from "recharts";
 import type { Route } from "./+types/dashboard-page";
 
-export function loader({ request }: Route.LoaderArgs) {
-  return {
-    // 대시보드 데이터 로드
-  };
-}
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "Dashboard | wemake" }];
+};
 
-export function action({ request }: Route.ActionArgs) {
-  return {
-    // 대시보드 액션 처리
-  };
-}
+const chartData = [
+  { month: "January", views: 186 },
+  { month: "February", views: 305 },
+  { month: "March", views: 237 },
+  { month: "April", views: 73 },
+  { month: "May", views: 209 },
+  { month: "June", views: 214 },
+];
+const chartConfig = {
+  views: {
+    label: "👁️",
+    color: "hsl(var(--primary))",
+  },
+} satisfies ChartConfig;
 
-export function meta({ data }: Route.MetaFunction) {
-  return [
-    { title: "대시보드 | WeMake" },
-    { name: "description", content: "내 대시보드" },
-  ];
-}
-
-export default function DashboardPage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
+export default function DashboardPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">대시보드</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">내 아이디어</h2>
-          <p className="text-gray-600">아이디어 관리</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">내 제품</h2>
-          <p className="text-gray-600">제품 관리</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">활동</h2>
-          <p className="text-gray-600">최근 활동</p>
-        </div>
-      </div>
+    <div className="space-y-5">
+      <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+      <Card className="w-1/2">
+        <CardHeader>
+          <CardTitle>Profile views</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <Line
+                dataKey="views"
+                type="natural"
+                stroke="var(--color-views)"
+                strokeWidth={2}
+                dot={false}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
