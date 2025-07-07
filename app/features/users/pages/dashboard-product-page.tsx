@@ -1,46 +1,91 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
 import type { Route } from "./+types/dashboard-product-page";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "~/common/components/ui/chart";
+import { Area, CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
-export function loader({ request, params }: Route.LoaderArgs) {
-  const { productId } = params;
-  return {
-    productId,
-    // 특정 제품의 상세 정보 로드
-  };
-}
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "Product Dashboard | wemake" }];
+};
 
-export function action({ request }: Route.ActionArgs) {
-  return {
-    // 제품 관련 액션 처리
-  };
-}
+const chartData = [
+  { month: "January", views: 186, visitors: 100 },
+  { month: "February", views: 305, visitors: 40 },
+  { month: "March", views: 237, visitors: 65 },
+  { month: "April", views: 73, visitors: 21 },
+  { month: "May", views: 209, visitors: 87 },
+  { month: "June", views: 214, visitors: 90 },
+];
+const chartConfig = {
+  views: {
+    label: "🌭Views",
+    color: "hsl(var(--primary))",
+  },
+  visitors: {
+    label: "🍟Visitors",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
 
-export function meta({ data }: Route.MetaFunction) {
-  return [
-    { title: "제품 관리 | WeMake" },
-    { name: "description", content: "내 제품 관리" },
-  ];
-}
-
-export default function DashboardProductPage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
-  const { productId } = loaderData;
-
+export default function DashboardProductPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">제품 관리</h1>
-      <div className="bg-white rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">제품 ID: {productId}</h2>
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-            제품 수정
-          </button>
-        </div>
-        <div className="space-y-4">
-          <p className="text-gray-600">제품 상세 정보가 여기에 표시됩니다.</p>
-        </div>
-      </div>
+    <div className="space-y-5">
+      <h1 className="text-2xl font-semibold mb-6">Analytics</h1>
+      <Card className="w-1/2">
+        <CardHeader>
+          <CardTitle>Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                left: 12,
+                right: 12,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <Area
+                dataKey="views"
+                type="natural"
+                stroke="var(--chart-2)"
+                strokeWidth={2}
+                dot={false}
+              ></Area>
+              <Area
+                dataKey="visitors"
+                type="natural"
+                stroke="var(--chart-1)"
+                strokeWidth={2}
+                fill="var(--chart-1)"
+                dot={false}
+              ></Area>
+              <ChartTooltip
+                cursor={false}
+                wrapperStyle={{ minWidth: "150px" }}
+                content={<ChartTooltipContent indicator="line" />}
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
