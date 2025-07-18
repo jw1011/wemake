@@ -11,7 +11,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "~/common/components/ui/chart";
-import { Area, CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { Area, CartesianGrid, LineChart, XAxis } from "recharts";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Product Dashboard | wemake" }];
@@ -25,14 +25,15 @@ const chartData = [
   { month: "May", views: 209, visitors: 87 },
   { month: "June", views: 214, visitors: 90 },
 ];
+
 const chartConfig = {
   views: {
     label: "🌭Views",
-    color: "hsl(var(--primary))",
+    color: "var(--chart-2)",
   },
   visitors: {
     label: "🍟Visitors",
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
 
@@ -68,15 +69,15 @@ export default function DashboardProductPage() {
                 stroke="var(--chart-2)"
                 strokeWidth={2}
                 dot={false}
-              ></Area>
+              />
               <Area
                 dataKey="visitors"
                 type="natural"
                 stroke="var(--chart-1)"
-                strokeWidth={2}
                 fill="var(--chart-1)"
+                strokeWidth={2}
                 dot={false}
-              ></Area>
+              />
               <ChartTooltip
                 cursor={false}
                 wrapperStyle={{ minWidth: "150px" }}
