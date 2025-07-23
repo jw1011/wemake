@@ -142,6 +142,10 @@ export default function HomePage() {
           />
         ))}
       </div>
+      <div className="grid text-sm font-bold leading-tight tracking-tight place-items-center ">
+        이 사이트는 개인 포트폴리오 용으로 만들어진 사이트입니다. Copyrightⓒ
+        2025 이주원 All Rights Reserved.
+      </div>
     </div>
   );
 }
