@@ -57,6 +57,13 @@
       "when": 1752646486304,
       "tag": "0007_daily_scarlet_spider",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1753343257263,
+      "tag": "0008_open_mad_thinker",
+      "breakpoints": true
     }
   ]
 }
