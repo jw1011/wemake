@@ -22,8 +22,8 @@ type Database = MergeDeep<
 >;
 
 const client = createClient<Database>(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
+  "https://gvmuxylyerpayplncrrm.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2bXV4eWx5ZXJwYXlwbG5jcnJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5NTY4NTgsImV4cCI6MjA2NzUzMjg1OH0.g8RBoWheRQRiRzEkrKZ-qr5TeKzumVP_OPPpQ2gQpXA"
 );
 
 export default client;
