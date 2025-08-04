@@ -22,6 +22,7 @@ export default function ProductPagination({
   const onClick = (page: number) => {
     searchParams.set("page", page.toString());
     setSearchParams(searchParams, {
+      preventScrollReset: true,
       //preventScrollReset: true
       //스크롤 새로고침 막는 방법
     });

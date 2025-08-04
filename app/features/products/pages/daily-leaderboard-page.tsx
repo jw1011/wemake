@@ -9,6 +9,7 @@ import ProductPagination from "~/common/components/product-pagination";
 import { getProductPagesByDateRange, getProductsByDateRange } from "../queries";
 import type { Route } from "./+types/daily-leaderboard-page";
 import { PAGE_SIZE } from "../constants";
+
 const paramsSchema = z.object({
   year: z.coerce.number(),
   month: z.coerce.number(),
