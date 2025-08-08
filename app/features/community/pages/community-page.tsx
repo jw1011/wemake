@@ -1,6 +1,6 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/community-page";
-import { Await, Form, Link, useSearchParams } from "react-router";
+import { data, Form, Link, useSearchParams } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import {
   DropdownMenu,
@@ -13,23 +13,47 @@ import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
 import { getPosts, getTopics } from "../queries";
-import { Suspense } from "react";
+import { z } from "zod";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | wemake" }];
 };
 
-export const loader = async () => {
-  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
-  return { topics, posts };
-};
+const searchParamsSchema = z.object({
+  sorting: z.enum(["newest", "popular"]).optional().default("newest"),
+  period: z
+    .enum(["all", "today", "week", "month", "year"])
+    .optional()
+    .default("all"),
+  keyword: z.string().optional(),
+  topic: z.string().optional(),
+});
 
-export const clientLoader = async ({
-  serverLoader,
-}: Route.ClientLoaderArgs) => {
-  const serverData = await serverLoader();
-  //await new Promise((resolve) => setTimeout(resolve, 10000));
-  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_search_params",
+        message: "Invalid search params",
+      },
+      { status: 400 }
+    );
+  }
+
+  const [topics, posts] = await Promise.all([
+    getTopics(),
+    getPosts({
+      limit: 20,
+      sorting: parsedData.sorting,
+      period: parsedData.period,
+      keyword: parsedData.keyword,
+      topic: parsedData.topic,
+    }),
+  ]);
   return { topics, posts };
 };
 
@@ -39,7 +63,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const sorting = searchParams.get("sorting") || "newest";
   const period = searchParams.get("period") || "all";
   return (
-    <div>
+    <div className="space-y-20">
       <Hero
         title="Community"
         subtitle="Ask questions, share ideas, and connect with other developers"
@@ -50,11 +74,11 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             <div className="space-y-5 w-full">
               <div className="flex items-center gap-5">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-1">
+                  <DropdownMenuTrigger className="flex items-center gap-1 cursor-pointer">
                     <span className="text-sm capitalize">{sorting}</span>
                     <ChevronDownIcon className="size-5" />
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent className="cursor-pointer">
                     {SORT_OPTIONS.map((option) => (
                       <DropdownMenuCheckboxItem
                         className="capitalize cursor-pointer"
@@ -73,7 +97,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                 </DropdownMenu>
                 {sorting === "popular" && (
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1">
+                    <DropdownMenuTrigger className="flex items-center gap-1 cursor-pointer">
                       <span className="text-sm capitalize">{period}</span>
                       <ChevronDownIcon className="size-5" />
                     </DropdownMenuTrigger>
@@ -99,7 +123,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
               <Form className="w-2/3">
                 <Input
                   type="text"
-                  name="search"
+                  name="keyword"
                   placeholder="Search for discussions"
                 />
               </Form>
@@ -109,7 +133,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             </Button>
           </div>
           <div className="space-y-5">
-            {posts.map((post) => (
+            {loaderData.posts.map((post) => (
               <PostCard
                 key={post.post_id}
                 id={post.post_id}
@@ -129,7 +153,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
             Topics
           </span>
           <div className="flex flex-col gap-2 items-start">
-            {topics.map((topic) => (
+            {loaderData.topics.map((topic) => (
               <Button
                 asChild
                 variant={"link"}
