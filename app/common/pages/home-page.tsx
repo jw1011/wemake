@@ -2,14 +2,15 @@ import { Link, type MetaFunction } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/post-card";
-import { IdeaCard } from "~/features/ideas/components/idea-card";
-import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
-import { DateTime } from "luxon";
 import { getProductsByDateRange } from "~/features/products/queries";
+import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
+import { getJobs } from "~/features/jobs/queries";
+import { IdeaCard } from "../../features/ideas/components/idea-card";
+import { JobCard } from "~/features/jobs/components/job-card";
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,12 +30,13 @@ export const loader = async () => {
     sorting: "newest",
   });
   const ideas = await getGptIdeas({ limit: 7 });
-  return { products, posts, ideas };
+  const jobs = await getJobs({ limit: 11 });
+  return { products, posts, ideas, jobs };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="px-20 space-y-40">
+    <div className="space-y-40">
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
@@ -47,7 +49,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/products/leaderboards">Explore all products &rarr;</Link>
           </Button>
         </div>
-        {loaderData.products.map((product) => (
+        {loaderData.products.map((product, index) => (
           <ProductCard
             key={product.product_id}
             id={product.product_id.toString()}
@@ -120,18 +122,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/jobs">Explore all jobs &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.jobs.map((job) => (
           <JobCard
-            key={`jobId-${index}`}
-            id={`jobId-${index}`}
-            company="Tesla"
-            companyLogoUrl="https://github.com/facebook.png"
-            companyHq="San Francisco, CA"
-            title="Software Engineer"
-            postedAt="12 hours ago"
-            type="Full-time"
-            positionLocation="Remote"
-            salary="$100,000 - $120,000"
+            key={job.job_id}
+            id={job.job_id}
+            company={job.company_name}
+            companyLogoUrl={job.company_logo}
+            companyHq={job.company_location}
+            title={job.position}
+            postedAt={job.created_at}
+            type={job.job_types}
+            positionLocation={job.location}
+            salary={job.salary_range}
           />
         ))}
       </div>
@@ -144,15 +146,17 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             Join a team looking for a new member.
           </p>
           <Button variant="link" asChild className="text-lg p-0">
-            <Link to="/teams">Explore all teams &rarr;</Link>
+            <Link prefetch="viewport" to="/teams">
+              Explore all teams &rarr;
+            </Link>
           </Button>
         </div>
         {Array.from({ length: 7 }).map((_, index) => (
           <TeamCard
             key={`teamId-${index}`}
             id={`teamId-${index}`}
-            leaderUsername="juwon"
-            leaderAvatarUrl="https://github.com/jw1011.png"
+            leaderUsername="lynn"
+            leaderAvatarUrl="https://github.com/inthetiger.png"
             positions={[
               "React Developer",
               "Backend Developer",
@@ -161,10 +165,6 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             projectDescription="a new social media platform"
           />
         ))}
-      </div>
-      <div className="grid text-sm font-bold leading-tight tracking-tight place-items-center ">
-        이 사이트는 개인 포트폴리오 용으로 만들어진 사이트입니다. Copyrightⓒ
-        2025 이주원 All Rights Reserved.
       </div>
     </div>
   );
