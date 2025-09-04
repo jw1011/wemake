@@ -683,6 +683,7 @@ export type Database = {
           product_stage: Database["public"]["Enums"]["product_stage"]
           roles: string
           team_id: number
+          team_leader_id: string | null
           team_size: number
           updated_at: string
         }
@@ -694,6 +695,7 @@ export type Database = {
           product_stage: Database["public"]["Enums"]["product_stage"]
           roles: string
           team_id?: number
+          team_leader_id?: string | null
           team_size: number
           updated_at?: string
         }
@@ -705,10 +707,19 @@ export type Database = {
           product_stage?: Database["public"]["Enums"]["product_stage"]
           roles?: string
           team_id?: number
+          team_leader_id?: string | null
           team_size?: number
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_team_leader"
+            columns: ["team_leader_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
       }
       topics: {
         Row: {

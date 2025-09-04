@@ -152,7 +152,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {/* {loaderData.teams.map((team) => (
+        {loaderData.teams.map((team) => (
           <TeamCard
             key={team.team_id}
             id={team.team_id}
@@ -161,7 +161,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             positions={team.roles.split(",")}
             projectDescription={team.product_description}
           />
-        ))} */}
+        ))}
       </div>
     </div>
   );

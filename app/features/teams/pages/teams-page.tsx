@@ -1,7 +1,7 @@
 import { Hero } from "~/common/components/hero";
-import type { Route } from "./+types/teams-page";
 import { TeamCard } from "../components/team-card";
 import { getTeams } from "../queries";
+import type { Route } from "./+types/teams-page";
 
 export const meta: Route.MetaFunction = () => [{ title: "Teams | wemake" }];
 

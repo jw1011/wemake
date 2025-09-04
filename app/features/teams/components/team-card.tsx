@@ -37,7 +37,7 @@ export function TeamCard({
               variant={"secondary"}
               className="inline-flex shadow-sm items-center text-base"
             >
-              <span>@{leaderUsername}</span>
+              <span>{leaderUsername}</span>
               <Avatar className="size-5">
                 <AvatarFallback>{leaderUsername[0]}</AvatarFallback>
                 {leaderAvatarUrl ? <AvatarImage src={leaderAvatarUrl} /> : null}
