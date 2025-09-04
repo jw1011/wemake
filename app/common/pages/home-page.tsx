@@ -2,16 +2,16 @@ import { Link, type MetaFunction } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/post-card";
+import { IdeaCard } from "~/features/ideas/components/idea-card";
+import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
-import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { getJobs } from "~/features/jobs/queries";
-import { IdeaCard } from "../../features/ideas/components/idea-card";
-import { JobCard } from "~/features/jobs/components/job-card";
-
+import { getTeams } from "~/features/teams/queries";
+import type { Route } from "./+types/home-page";
 export const meta: MetaFunction = () => {
   return [
     { title: "Home | wemake" },
@@ -31,7 +31,8 @@ export const loader = async () => {
   });
   const ideas = await getGptIdeas({ limit: 7 });
   const jobs = await getJobs({ limit: 11 });
-  return { products, posts, ideas, jobs };
+  const teams = await getTeams({ limit: 7 });
+  return { products, posts, ideas, jobs, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -137,7 +138,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-4 ">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Find a team mate
@@ -151,20 +152,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {/* {loaderData.teams.map((team) => (
           <TeamCard
-            key={`teamId-${index}`}
-            id={`teamId-${index}`}
-            leaderUsername="lynn"
-            leaderAvatarUrl="https://github.com/inthetiger.png"
-            positions={[
-              "React Developer",
-              "Backend Developer",
-              "Product Manager",
-            ]}
-            projectDescription="a new social media platform"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.team_leader.username}
+            leaderAvatarUrl={team.team_leader.avatar}
+            positions={team.roles.split(",")}
+            projectDescription={team.product_description}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );

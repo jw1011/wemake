@@ -1,5 +1,4 @@
 import { Hero } from "~/common/components/hero";
-
 import { Button } from "~/common/components/ui/button";
 import {
   Avatar,
@@ -24,7 +23,7 @@ export const meta: Route.MetaFunction = () => [
 export default function TeamPage() {
   return (
     <div className="space-y-20">
-      <Hero title="Join juwon's team" />
+      <Hero title="Join lynn's team" />
       <div className="grid grid-cols-6 gap-40 items-start">
         <div className="col-span-4 grid grid-cols-4 gap-5">
           {[
@@ -93,10 +92,10 @@ export default function TeamPage() {
           <div className="flex gap-5">
             <Avatar className="size-14">
               <AvatarFallback>N</AvatarFallback>
-              <AvatarImage src="https://github.com/jw1011.png" />
+              <AvatarImage src="https://github.com/inthetiger.png" />
             </Avatar>
             <div className="flex flex-col">
-              <h4 className="text-lg font-medium">juwon</h4>
+              <h4 className="text-lg font-medium">Lynn</h4>
               <Badge variant="secondary">Entrepreneur</Badge>
             </div>
           </div>

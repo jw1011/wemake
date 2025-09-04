@@ -71,6 +71,13 @@
       "when": 1754027191300,
       "tag": "0009_greedy_greymalkin",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1756878217921,
+      "tag": "0010_blushing_wong",
+      "breakpoints": true
     }
   ]
 }

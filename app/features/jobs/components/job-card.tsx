@@ -65,7 +65,6 @@ export function JobCard({
             <span className="text-sm font-medium text-muted-foreground">
               {salary}
             </span>
-
             <span className="text-sm font-medium text-muted-foreground">
               {companyHq}
             </span>
