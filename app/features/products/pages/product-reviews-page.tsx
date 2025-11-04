@@ -10,7 +10,6 @@ import {
 } from "~/common/components/ui/dialog";
 import CreateReviewDialog from "../components/create-review-dialog";
 import { useOutletContext } from "react-router";
-
 import { getReviews } from "../queries";
 import type { Route } from "./+types/product-reviews-page";
 
@@ -22,7 +21,7 @@ export function meta() {
 }
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  const reviews = await getReviews(params.productId);
+  const reviews = await getReviews(Number(params.productId));
   return { reviews };
 };
 

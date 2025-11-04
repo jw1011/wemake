@@ -5,15 +5,15 @@ import type { Route } from "./+types/job-page";
 import { getJobById } from "../queries";
 import { DateTime } from "luxon";
 
-export function meta(): Route.MetaFunction {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Job Details | WeMake" },
     { name: "description", content: "View job details" },
   ];
-}
+};
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  const job = await getJobById(params.jobId);
+  const job = await getJobById(Number(params.jobId));
 
   return { job };
 };

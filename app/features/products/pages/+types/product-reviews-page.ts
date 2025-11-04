@@ -13,7 +13,9 @@ export type Info = {
   id: "features/products/pages/product-reviews-page";
   file: "features/products/pages/product-reviews-page.tsx";
   path: "products/:productId/reviews";
-  params: { productId: number } & { [key: string]: string | undefined };
+  params: { productId: string | number } & {
+    [key: string]: string | undefined;
+  };
   module: Module;
   loaderData: T.CreateLoaderData<Module>;
   actionData: T.CreateActionData<Module>;

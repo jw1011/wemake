@@ -22,6 +22,11 @@ type Database = MergeDeep<
           >;
         };
       };
+      community_post_detail: {
+        Row: SetNonNullable<
+          SupabaseDatabase["public"]["Views"]["community_post_detail"]["Row"]
+        >;
+      };
       gpt_ideas_view: {
         Row: SetNonNullable<
           SupabaseDatabase["public"]["Views"]["gpt_ideas_view"]["Row"]

@@ -22,7 +22,7 @@ export const meta: Route.MetaFunction = () => [
 ];
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  const team = await getTeamById(params.teamId as string);
+  const team = await getTeamById(params.teamId);
   return { team };
 };
 
