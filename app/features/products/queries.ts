@@ -5,10 +5,9 @@ import { DateTime } from "luxon";
 import client from "~/supa-client";
 import { PAGE_SIZE } from "./constants";
 import { error } from "console";
-// import { data } from "autoprefixer";
 import autoprefixer from "autoprefixer";
 
-const productListSelect = `
+export const productListSelect = `
   product_id,
   name,
   tagline,
