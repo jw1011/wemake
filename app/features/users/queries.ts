@@ -43,7 +43,7 @@ export const getUserProducts = async (username: string) => {
 
 export const getUserPosts = async (username: string) => {
   const { data, error } = await client
-    .from("posts")
+    .from("community_post_list_view")
     .select("*")
     .eq("username", username);
   if (error) {

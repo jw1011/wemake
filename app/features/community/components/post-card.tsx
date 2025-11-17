@@ -16,7 +16,7 @@ import { cn } from "~/lib/utils";
 import { DateTime } from "luxon";
 
 interface PostCardProps {
-  id: number;
+  id: number | string;
   title: string;
   author: string;
   authorAvatarUrl: string | null;
