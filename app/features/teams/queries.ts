@@ -23,7 +23,7 @@ export const getTeams = async ({ limit }: { limit: number }) => {
   return data;
 };
 
-export const getTeamById = async (teamId: string) => {
+export const getTeamById = async (teamId: number) => {
   const { data, error } = await client
     .from("teams")
     .select(

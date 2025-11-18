@@ -46,7 +46,7 @@ export function PostCard({
       >
         <CardHeader className="flex flex-row items-center gap-2">
           <Avatar className="size-14">
-            <AvatarFallback>{author[0]}</AvatarFallback>
+            <AvatarFallback>{author ? author[0] : "?"}</AvatarFallback>
             {authorAvatarUrl && <AvatarImage src={authorAvatarUrl} />}
           </Avatar>
           <div className="space-y-2">
@@ -56,7 +56,11 @@ export function PostCard({
                 {author} on {category}
               </span>
               <DotIcon className="w-4 h-4" />
-              <span>{DateTime.fromISO(postedAt).toRelative()}</span>
+              <span>
+                <span>
+                  {postedAt ? DateTime.fromISO(postedAt).toRelative() : "-"}
+                </span>
+              </span>
             </div>
           </div>
         </CardHeader>
