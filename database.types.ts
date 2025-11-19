@@ -38,6 +38,54 @@ export type Database = {
         }
         Relationships: []
       }
+      community_posts: {
+        Row: {
+          content: string | null
+          created_at: string
+          is_published: boolean
+          metadata: Json | null
+          post_id: number
+          profile_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          is_published?: boolean
+          metadata?: Json | null
+          post_id?: number
+          profile_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          is_published?: boolean
+          metadata?: Json | null
+          post_id?: number
+          profile_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_posts_profile_fk"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "fk_community_posts_profile"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
+      }
       follows: {
         Row: {
           created_at: string
@@ -54,22 +102,7 @@ export type Database = {
           follower_id?: string | null
           following_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "follows_follower_id_profiles_profile_id_fk"
-            columns: ["follower_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "follows_following_id_profiles_profile_id_fk"
-            columns: ["following_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
+        Relationships: []
       }
       gpt_ideas: {
         Row: {
@@ -96,15 +129,7 @@ export type Database = {
           idea?: string
           views?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "gpt_ideas_claimed_by_profiles_profile_id_fk"
-            columns: ["claimed_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
+        Relationships: []
       }
       gpt_ideas_likes: {
         Row: {
@@ -134,13 +159,6 @@ export type Database = {
             referencedRelation: "gpt_ideas_view"
             referencedColumns: ["gpt_idea_id"]
           },
-          {
-            foreignKeyName: "gpt_ideas_likes_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
         ]
       }
       jobs: {
@@ -152,8 +170,9 @@ export type Database = {
           company_name: string
           created_at: string
           job_id: number
-          job_types: Database["public"]["Enums"]["job_type"]
-          location: Database["public"]["Enums"]["locations"]
+          job_type: Database["public"]["Enums"]["job_type"]
+          job_types: string | null
+          location: Database["public"]["Enums"]["location"]
           overview: string
           position: string
           qualifications: string
@@ -170,8 +189,9 @@ export type Database = {
           company_name: string
           created_at?: string
           job_id?: never
-          job_types: Database["public"]["Enums"]["job_type"]
-          location: Database["public"]["Enums"]["locations"]
+          job_type: Database["public"]["Enums"]["job_type"]
+          job_types?: string | null
+          location: Database["public"]["Enums"]["location"]
           overview: string
           position: string
           qualifications: string
@@ -188,8 +208,9 @@ export type Database = {
           company_name?: string
           created_at?: string
           job_id?: never
-          job_types?: Database["public"]["Enums"]["job_type"]
-          location?: Database["public"]["Enums"]["locations"]
+          job_type?: Database["public"]["Enums"]["job_type"]
+          job_types?: string | null
+          location?: Database["public"]["Enums"]["location"]
           overview?: string
           position?: string
           qualifications?: string
@@ -223,13 +244,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "message_rooms"
             referencedColumns: ["message_room_id"]
-          },
-          {
-            foreignKeyName: "message_room_members_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
           },
         ]
       }
@@ -277,13 +291,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "message_rooms"
             referencedColumns: ["message_room_id"]
-          },
-          {
-            foreignKeyName: "messages_sender_id_profiles_profile_id_fk"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
           },
         ]
       }
@@ -337,34 +344,6 @@ export type Database = {
             referencedRelation: "posts"
             referencedColumns: ["post_id"]
           },
-          {
-            foreignKeyName: "notifications_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "notifications_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "notifications_source_id_profiles_profile_id_fk"
-            columns: ["source_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "notifications_target_id_profiles_profile_id_fk"
-            columns: ["target_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
         ]
       }
       post_replies: {
@@ -404,6 +383,13 @@ export type Database = {
             referencedColumns: ["post_reply_id"]
           },
           {
+            foreignKeyName: "post_replies_parent_id_post_replies_post_reply_id_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "post_replies_view"
+            referencedColumns: ["post_reply_id"]
+          },
+          {
             foreignKeyName: "post_replies_post_id_posts_post_id_fk"
             columns: ["post_id"]
             isOneToOne: false
@@ -425,7 +411,7 @@ export type Database = {
             referencedColumns: ["post_id"]
           },
           {
-            foreignKeyName: "post_replies_profile_id_profiles_profile_id_fk"
+            foreignKeyName: "post_replies_profile_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -468,13 +454,6 @@ export type Database = {
             referencedRelation: "posts"
             referencedColumns: ["post_id"]
           },
-          {
-            foreignKeyName: "post_upvotes_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
         ]
       }
       posts: {
@@ -510,20 +489,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "posts_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "posts_topic_id_topics_topic_id_fk"
-            columns: ["topic_id"]
-            isOneToOne: false
-            referencedRelation: "community_post_detail"
-            referencedColumns: ["topic_id"]
-          },
-          {
             foreignKeyName: "posts_topic_id_topics_topic_id_fk"
             columns: ["topic_id"]
             isOneToOne: false
@@ -545,29 +510,7 @@ export type Database = {
           product_id?: number
           profile_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "product_upvotes_profile_id_profiles_profile_id_fk"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["profile_id"]
-          },
-        ]
+        Relationships: []
       }
       products: {
         Row: {
@@ -613,6 +556,20 @@ export type Database = {
           url?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_products_category"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["category_id"]
+          },
+          {
+            foreignKeyName: "fk_products_profile"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
           {
             foreignKeyName: "products_category_id_categories_category_id_fk"
             columns: ["category_id"]
@@ -699,23 +656,43 @@ export type Database = {
           review_id?: never
           updated_at?: string
         }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          profile_id: string
+          role: string
+          team_id: number
+          team_member_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          profile_id: string
+          role?: string
+          team_id: number
+          team_member_id?: never
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          profile_id?: string
+          role?: string
+          team_id?: number
+          team_member_id?: never
+          updated_at?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "reviews_product_id_products_product_id_fk"
-            columns: ["product_id"]
+            foreignKeyName: "fk_team_members_profile"
+            columns: ["profile_id"]
             isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["product_id"]
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
           },
           {
-            foreignKeyName: "reviews_product_id_products_product_id_fk"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products_overview_view"
-            referencedColumns: ["product_id"]
-          },
-          {
-            foreignKeyName: "reviews_profile_id_profiles_profile_id_fk"
+            foreignKeyName: "team_members_profile_id_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -732,7 +709,7 @@ export type Database = {
           product_stage: Database["public"]["Enums"]["product_stage"]
           roles: string
           team_id: number
-          team_leader_id: string | null
+          team_leader_id: string
           team_size: number
           updated_at: string
         }
@@ -743,8 +720,8 @@ export type Database = {
           product_name: string
           product_stage: Database["public"]["Enums"]["product_stage"]
           roles: string
-          team_id?: number
-          team_leader_id?: string | null
+          team_id?: never
+          team_leader_id: string
           team_size: number
           updated_at?: string
         }
@@ -755,14 +732,14 @@ export type Database = {
           product_name?: string
           product_stage?: Database["public"]["Enums"]["product_stage"]
           roles?: string
-          team_id?: number
-          team_leader_id?: string | null
+          team_id?: never
+          team_leader_id?: string
           team_size?: number
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "fk_team_leader"
+            foreignKeyName: "teams_team_leader_id_fkey"
             columns: ["team_leader_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -795,19 +772,16 @@ export type Database = {
     Views: {
       community_post_detail: {
         Row: {
+          author: string | null
           author_avatar: string | null
-          author_created_at: string | null
-          author_name: string | null
-          author_role: Database["public"]["Enums"]["role"] | null
+          author_username: string | null
           content: string | null
           created_at: string | null
           post_id: number | null
-          products: number | null
-          replies: number | null
           title: string | null
-          topic_id: number | null
-          topic_name: string | null
+          topic: string | null
           topic_slug: string | null
+          updated_at: string | null
           upvotes: number | null
         }
         Relationships: []
@@ -817,6 +791,7 @@ export type Database = {
           author: string | null
           author_avatar: string | null
           author_username: string | null
+          content: string | null
           created_at: string | null
           post_id: number | null
           title: string | null
@@ -837,21 +812,63 @@ export type Database = {
         }
         Relationships: []
       }
-      products_overview_view: {
+      post_replies_view: {
         Row: {
-          average_rating: number | null
-          description: string | null
-          how_it_works: string | null
-          icon: string | null
-          name: string | null
-          product_id: number | null
-          reviews: string | null
-          tagline: string | null
-          upvotes: string | null
-          url: string | null
-          views: string | null
+          author: string | null
+          author_avatar: string | null
+          author_username: string | null
+          created_at: string | null
+          parent_id: number | null
+          post_id: number | null
+          post_reply_id: number | null
+          profile_id: string | null
+          reply: string | null
+          updated_at: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "post_replies_parent_id_post_replies_post_reply_id_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "post_replies"
+            referencedColumns: ["post_reply_id"]
+          },
+          {
+            foreignKeyName: "post_replies_parent_id_post_replies_post_reply_id_fk"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "post_replies_view"
+            referencedColumns: ["post_reply_id"]
+          },
+          {
+            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_post_detail"
+            referencedColumns: ["post_id"]
+          },
+          {
+            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_post_list_view"
+            referencedColumns: ["post_id"]
+          },
+          {
+            foreignKeyName: "post_replies_post_id_posts_post_id_fk"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["post_id"]
+          },
+          {
+            foreignKeyName: "post_replies_profile_fk"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
       }
     }
     Functions: {
@@ -859,6 +876,8 @@ export type Database = {
     }
     Enums: {
       job_type: "full-time" | "part-time" | "remote"
+      job_types: "full-time" | "part-time" | "freelance" | "internship"
+      location: "remote" | "in-person" | "hybrid"
       locations: "remote" | "in-person" | "hybrid"
       notification_type: "follow" | "review" | "reply" | "mention"
       product_stage: "idea" | "prototype" | "mvp" | "product"
@@ -1004,6 +1023,8 @@ export const Constants = {
   public: {
     Enums: {
       job_type: ["full-time", "part-time", "remote"],
+      job_types: ["full-time", "part-time", "freelance", "internship"],
+      location: ["remote", "in-person", "hybrid"],
       locations: ["remote", "in-person", "hybrid"],
       notification_type: ["follow", "review", "reply", "mention"],
       product_stage: ["idea", "prototype", "mvp", "product"],
